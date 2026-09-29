@@ -1,0 +1,359 @@
+--- index.html (原始)
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Catan Buddy</title>
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+
++++ index.html (修改后)
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Catan Buddy</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#1a1a2e;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+.app{max-width:420px;margin:0 auto;min-height:100vh}
+.scr{min-height:100vh;display:flex;flex-direction:column;padding:16px;animation:fi .3s}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pu{0%,100%{opacity:.5}50%{opacity:1}}
+.bg{background:linear-gradient(to bottom,#1a1a2e,#16213e,#0f3460)}
+.btn{padding:12px 24px;border:none;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;width:100%;transition:transform .1s}
+.btn:active{transform:scale(.95)}
+.bg-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1a2e}
+.bg-green{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.bg-red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+.bg-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.bg-sm{padding:8px 16px;font-size:14px;width:auto}
+.hb{position:relative;width:128px;height:144px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:none}
+.hb svg{position:absolute;inset:0;width:100%;height:100%}
+.hb .ct{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.hb .ic{font-size:30px}
+.hb .lb{color:#fff;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1px}
+.logo{font-size:36px;font-weight:900;background:linear-gradient(90deg,#fcd34d,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sub{color:rgba(196,181,253,.4);font-size:13px}
+.inp{width:100%;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(139,92,246,.3);border-radius:12px;color:#fff;font-size:16px;outline:none}
+.inp:focus{border-color:rgba(139,92,246,.6)}
+.inp::placeholder{color:rgba(255,255,255,.3)}
+.cd{padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(139,92,246,.15);border-radius:12px}
+.cd-a{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3)}
+.ls{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(196,181,253,.5);margin-bottom:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;font-size:13px}
+.dice{width:64px;height:64px;border-radius:12px;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.dice-b{background:#1e3a5f}
+.dice-r{background:#8b1a1a}
+.dice .dot{position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;transform:translate(-50%,-50%)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.tc{text-align:center}
+.ts{font-size:14px}.tx{font-size:12px}.tl{font-size:18px}.txl{font-size:20px}.t2{font-size:24px}.t3{font-size:30px}.t4{font-size:36px}.t5{font-size:48px}
+.tg{color:#fbbf24}.tm{color:rgba(255,255,255,.5)}.td{color:rgba(196,181,253,.4)}
+.fb{font-weight:700}.fk{font-weight:900}
+.rn{border-radius:12px}.rf{border-radius:9999px}
+.w1{width:100%}
+.mt2{margin-top:8px}.mt3{margin-top:12px}.mt4{margin-top:16px}.mt6{margin-top:24px}.mt8{margin-top:32px}
+.mb2{margin-bottom:8px}.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}.mb6{margin-bottom:24px}.mb8{margin-bottom:32px}
+.pill{padding:4px 12px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:8px;font-size:13px;color:#fbbf24;font-weight:500}
+.rb{padding:8px;border-radius:8px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);transition:all .15s}
+.rb-g{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4)}
+.rb-r{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.4)}
+.rb-s{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.4)}
+.dn{padding:8px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;flex:1;text-align:center;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);transition:all .15s}
+.dn-ab{background:#1e3a5f;color:#fff;border-color:#3b82f6}
+.dn-ar{background:#8b1a1a;color:#fff;border-color:#ef4444}
+.ch{width:48px;height:56px;cursor:pointer;position:relative;border:none;background:none;transition:transform .15s}
+.ch:hover{transform:scale(1.1)}
+.ch.u{opacity:.3;cursor:not-allowed}
+.ch svg{width:100%;height:100%}
+.ch .ck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+.sb{display:flex;gap:8px;margin-bottom:24px}
+.sb div{height:6px;flex:1;border-radius:3px;background:rgba(255,255,255,.1)}
+.sb .dn2{background:rgba(245,158,11,.5)}
+.sb .cr{background:#fbbf24}
+.pr{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.pr.a{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3)}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden;flex-shrink:0}
+.av img{width:100%;height:100%;object-fit:cover}
+.el{max-height:160px;overflow-y:auto}
+.ei{padding:8px;background:rgba(255,255,255,.05);border-radius:8px;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:4px}
+.tb{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.bb{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;padding:8px;font-size:20px}
+.pd{padding:12px;border-radius:12px;display:flex;align-items:center;gap:12px}
+.p1{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3)}
+.p2{background:rgba(192,192,192,.05);border:1px solid rgba(192,192,192,.15)}
+.p3{background:rgba(205,127,50,.08);border:1px solid rgba(205,127,50,.15)}
+.po{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.bbg{flex:1;height:24px;background:rgba(255,255,255,.05);border-radius:12px;overflow:hidden}
+.bf{height:100%;border-radius:12px;transition:width .5s}
+.tab{padding:8px 12px;border-radius:8px;font-size:13px;white-space:nowrap;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);transition:all .15s}
+.tab.ac{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.4);color:#fbbf24}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.empty{text-align:center;padding:64px 16px}
+.empty .icon{font-size:48px;opacity:.4;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<script>
+const SK='catan_state',STK='catan_stats',CK='catan_cur';
+let bc;try{bc=new BroadcastChannel('catan_sync')}catch(e){}
+const ld=()=>{try{return JSON.parse(localStorage.getItem(SK))}catch(e){return null}};
+const sv=(s)=>{localStorage.setItem(SK,JSON.stringify(s));if(bc)bc.postMessage({type:'sync',state:s})};
+const lds=()=>{try{return JSON.parse(localStorage.getItem(STK))}catch(e){return null}};
+const svs=(s)=>localStorage.setItem(STK,JSON.stringify(s));
+const uid=()=>Math.random().toString(36).slice(2,10);
+
+const R={wood:'🪵',brick:'🧱',sheep:'🐑',wheat:'🌾',ore:'⛏️'};
+const RN={wood:'Madeira',brick:'Tijolo',sheep:'Ovelha',wheat:'Trigo',ore:'Minério'};
+const CL=[{v:'blue',l:'Azul',h:'#1e3a5f'},{v:'red',l:'Vermelho',h:'#8b1a1a'},{v:'ivory',l:'Marfim',h:'#f5f0e8'},{v:'orange',l:'Laranja',h:'#d4742c'},{v:'green',l:'Verde',h:'#1a5c2e'},{v:'brown',l:'Castanho',h:'#5c3a1a'}];
+const CM={};CL.forEach(c=>CM[c.v]=c.h);
+
+const ds={rankings:[],nf:{2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0},msr:'ore',mar:'wheat',rd:{wood:0,brick:0,sheep:0,wheat:0,ore:0},tg:0};
+
+function mkD(){const c=[];for(let i=0;i<14;i++)c.push({id:uid(),t:'knight',p:false});for(let i=0;i<5;i++)c.push({id:uid(),t:'vp',p:false});for(let i=0;i<2;i++)c.push({id:uid(),t:'road',p:false});for(let i=0;i<2;i++)c.push({id:uid(),t:'plenty',p:false});for(let i=0;i<2;i++)c.push({id:uid(),t:'mono',p:false});return c.sort(()=>Math.random()-.5)}
+let dk=mkD();
+
+function mkB(){const t=['ore','ore','ore','wheat','wheat','wheat','wheat','sheep','sheep','sheep','sheep','wood','wood','wood','wood','brick','brick','brick','desert'];const p=[{q:0,r:-2},{q:1,r:-2},{q:2,r:-2},{q:-1,r:-1},{q:0,r:-1},{q:1,r:-1},{q:2,r:-1},{q:-2,r:0},{q:-1,r:0},{q:0,r:0},{q:1,r:0},{q:2,r:0},{q:-2,r:1},{q:-1,r:1},{q:0,r:1},{q:1,r:1},{q:-2,r:2},{q:-1,r:2},{q:0,r:2}];const s=[...t].sort(()=>Math.random()-.5);const n=[5,2,6,3,8,10,9,12,11,4,8,10,9,4,5,6,3,11];let i=0;return p.map((x,j)=>{const h={id:'h'+j,type:s[j],pos:x};if(s[j]!=='desert')h.num=n[i++];return h})}
+
+let S=ld()||{phase:'lobby',hostId:null,players:[],ci:0,tn:1,board:null,dh:[],tr:[],ev:[],rob:null,lrh:null,lah:null};
+let ST=lds()||{...ds};
+let CI=localStorage.getItem(CK)||null;
+let sc='home';
+
+function up(c){Object.assign(S,c);sv(S);rn()}
+if(bc)bc.onmessage=e=>{if(e.data?.type==='sync'){S=e.data.state;rn()}};
+window.addEventListener('storage',e=>{if(e.key===SK&&e.newValue){S=JSON.parse(e.newValue);rn()}if(e.key===STK&&e.newValue){ST=JSON.parse(e.newValue);rn()}});
+
+function rn(){
+const el=document.getElementById('app');
+if(sc==='home')el.innerHTML=rH();
+else if(sc==='player')el.innerHTML=rP();
+else if(sc==='setup')el.innerHTML=rS();
+else if(sc==='play')el.innerHTML=rG();
+else if(sc==='end')el.innerHTML=rE();
+else if(sc==='stats')el.innerHTML=rT();
+ae();
+}
+
+function rH(){
+const cp=S.players.find(p=>p.id===CI);
+let pt='';
+if(S.phase==='setup')pt='<div class="pill mt8">⚙️ Setup do Jogo</div>';
+else if(S.phase==='playing')pt='<div class="pill mt8">🎮 Jogo em Curso</div>';
+else if(S.phase==='finished')pt='<div class="pill mt8">🏆 Jogo Terminado</div>';
+return `<div class="scr bg" style="justify-content:center;align-items:center">
+<div class="tc mb8"><div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px">
+<svg viewBox="0 0 60 70" width="48" height="56"><polygon points="30,3 55,18 55,52 30,67 5,52 5,18" fill="#d4a843" stroke="#b8922f" stroke-width="2"/><text x="30" y="42" text-anchor="middle" fill="#1a1a2e" font-size="20" font-weight="bold">⬡</text></svg>
+<span class="logo">Catan Buddy</span></div>
+<div class="sub">O teu companheiro de jogo</div></div>
+${cp?`<div class="badge mb6"><div class="av" style="width:24px;height:24px;background:${CM[cp.color]||'#666'}">${cp.photo?`<img src="${cp.photo}">`:'👤'}</div><span style="color:rgba(255,255,255,.8)">${cp.name}</span><span class="td tx">• ${S.players.length} jogadores</span></div>`:''}
+<div style="display:flex;flex-direction:column;align-items:center;gap:24px">
+<button class="hb" data-a="np"><svg viewBox="0 0 120 140"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a3f6b"/><stop offset="100%" stop-color="#2d2545"/></linearGradient></defs><polygon points="60,5 110,35 110,105 60,135 10,105 10,35" fill="url(#g1)" stroke="#6b5b95" stroke-width="2"/></svg><div class="ct"><span class="ic">👤</span><span class="lb">Jogador</span></div></button>
+<div style="display:flex;gap:32px">
+<button class="hb" data-a="npl"><svg viewBox="0 0 120 140"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a3f6b"/><stop offset="100%" stop-color="#2d2545"/></linearGradient></defs><polygon points="60,5 110,35 110,105 60,135 10,105 10,35" fill="url(#g2)" stroke="#6b5b95" stroke-width="2"/></svg><div class="ct"><span class="ic">🎲</span><span class="lb">Jogar</span></div></button>
+<button class="hb" data-a="nst"><svg viewBox="0 0 120 140"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a3f6b"/><stop offset="100%" stop-color="#2d2545"/></linearGradient></defs><polygon points="60,5 110,35 110,105 60,135 10,105 10,35" fill="url(#g3)" stroke="#6b5b95" stroke-width="2"/></svg><div class="ct"><span class="ic">📊</span><span class="lb">Stats</span></div></button>
+</div></div>
+${pt}
+<div class="td tx mt6 tc">${S.players.length>0?`🔄 ${S.players.length} jogador${S.players.length>1?'es':''} na sessão`:'📱 Abre noutro separador para jogar em conjunto'}</div>
+</div>`}
+
+function rP(){
+const cp=S.players.find(p=>p.id===CI);
+const used=S.players.filter(p=>p.id!==CI).map(p=>p.color);
+return `<div class="scr bg">
+<div style="display:flex;align-items:center;margin-bottom:32px"><button class="bb" data-a="home">←</button><span class="txl fb" style="margin-left:8px">Perfil do Jogador</span></div>
+<div class="tc mb6">
+<div style="position:relative;width:160px;height:180px;margin:0 auto">
+<svg viewBox="0 0 160 180" style="position:absolute;inset:0;width:100%;height:100%"><defs><clipPath id="hc"><polygon points="80,5 150,42 150,138 80,175 10,138 10,42"/></clipPath><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6b5b95"/><stop offset="100%" stop-color="#4a3f6b"/></linearGradient></defs><polygon points="80,5 150,42 150,138 80,175 10,138 10,42" fill="url(#fg)" stroke="#8b7bb5" stroke-width="3"/><polygon points="80,12 143,46 143,134 80,168 17,134 17,46" fill="#2d2545"/></svg>
+${cp?.photo?`<img src="${cp.photo}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:polygon(50% 3%,94% 25%,94% 75%,50% 97%,6% 75%,6% 25%)">`:'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;clip-path:polygon(50% 3%,94% 25%,94% 75%,50% 97%,6% 75%,6% 25%)"><span style="font-size:48px;opacity:.4">📷</span></div>'}
+</div>
+<div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
+<button class="btn bg-ghost bg-sm" data-a="pg">📁 Galeria</button>
+<button class="btn bg-ghost bg-sm" data-a="pc">📸 Câmara</button>
+</div>
+<input type="file" id="fi" accept="image/*" style="display:none">
+<input type="file" id="ci" accept="image/*" capture="user" style="display:none">
+</div>
+<div style="max-width:320px;margin:0 auto 32px">
+<div class="ls">Nome</div>
+<input class="inp" id="ni" type="text" value="${cp?.name||''}" placeholder="O teu nome..." maxlength="20">
+</div>
+<div style="max-width:320px;margin:0 auto 40px">
+<div class="ls">Cor</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+${CL.map(c=>{const u=used.includes(c.v);const s=cp?.color===c.v;return `<button class="ch${u?' u':''}" data-cl="${c.v}" ${u?'disabled':''}><svg viewBox="0 0 48 56"><polygon points="24,2 44,14 44,42 24,54 4,42 4,14" fill="${c.h}" stroke="${s?'#fbbf24':'#555'}" stroke-width="${s?3:1}"/></svg>${s?'<div class="ck">✓</div>':''}${u?'<div class="ck">✗</div>':''}</button>`}).join('')}
+</div></div>
+<button class="btn bg-gold" id="sb" style="max-width:320px;margin:0 auto">SALVAR PERFIL</button>
+</div>`}
+
+let ss='expansion';
+function rS(){
+const cp=S.players.find(p=>p.id===CI);
+const ih=cp?.id===S.hostId;
+if(!ih&&S.phase==='setup'){return `<div class="scr bg" style="justify-content:center;align-items:center"><div class="tc" style="animation:pu 2s infinite"><div class="t5 mb4">⏳</div><div class="t2 fb mb2">Aguardando Setup</div><div class="td">O anfitrião está a configurar...</div><div class="td tx mt4">${S.players.length} jogadores</div></div></div>`}
+const st=['expansion','order','board','ready'];
+const si=st.indexOf(ss);
+let c='';
+if(ss==='expansion'){c=`<div class="ls tc mb4">Que extensão vais jogar?</div><div style="display:flex;flex-direction:column;gap:12px">${[{v:'base',l:'Catan Base',i:'🏝️',d:'Jogo base'},{v:'seafarers',l:'Navegantes',i:'⛵',d:'Com rotas marítimas'},{v:'citiesKnights',l:'Cidades e Cavaleiros',i:'⚔️',d:'Com cavaleiros'}].map(e=>`<button class="cd" data-ex="${e.v}" style="display:flex;align-items:center;gap:16px;cursor:pointer;text-align:left;border:none;color:#fff;width:100%"><span style="font-size:30px">${e.i}</span><div><div class="fb">${e.l}</div><div class="td tx">${e.d}</div></div></button>`).join('')}</div>`}
+else if(ss==='order'){c=`<div class="ls tc mb4">Ordena os jogadores</div><div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">${S.players.map((p,i)=>`<div class="pr"><span class="tg fb tl" style="width:24px">${i+1}</span><div class="av" style="background:${CM[p.color]}">${p.photo?`<img src="${p.photo}">`:'👤'}</div><span style="flex:1">${p.name}</span><div style="display:flex;gap:4px"><button class="btn bg-ghost bg-sm" data-ro="${i}:u" ${i===0?'disabled style="opacity:.2"':''} style="width:32px;padding:4px">↑</button><button class="btn bg-ghost bg-sm" data-ro="${i}:d" ${i===S.players.length-1?'disabled style="opacity:.2"':''} style="width:32px;padding:4px">↓</button></div></div>`).join('')}</div><button class="btn bg-gold" data-st="board">CONTINUAR →</button>`}
+else if(ss==='board'){const rc={wood:'#2d6b30',brick:'#b55a30',sheep:'#a8c75a',wheat:'#d4a843',ore:'#7a7a8a',desert:'#c4b99a'};c=`<div class="ls tc mb4">Tabuleiro gerado</div><div style="position:relative;width:100%;max-width:320px;aspect-ratio:1;margin:0 auto 16px">${S.board?.hexes.map(h=>{const x=50+(h.pos.q*18)+(h.pos.r*9);const y=50+(h.pos.r*16);return `<div style="position:absolute;width:48px;height:56px;left:${x}%;top:${y}%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 48 56" style="position:absolute;inset:0;width:100%;height:100%"><polygon points="24,2 44,14 44,42 24,54 4,42 4,14" fill="${rc[h.type]||'#666'}" stroke="#333" stroke-width="1"/></svg>${h.num?`<span style="position:relative;z-index:1;color:#fff;font-weight:700;font-size:11px;background:rgba(0,0,0,.4);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center">${h.num}</span>`:''}</div>`}).join('')}</div><div style="display:flex;gap:12px"><button class="btn bg-ghost" data-st="order">← VOLTAR</button><button class="btn bg-gold" data-st="ready">CONTINUAR →</button></div>`}
+else if(ss==='ready'){c=`<div class="tc" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center"><div class="t5 mb4">🎮</div><div class="t2 fb mb2">Tudo Pronto!</div><div class="td ts mb2">${S.players.length} jogadores</div><div class="td tx mb8">Primeiro: <span class="tg fb">${S.players[0]?.name}</span></div><button class="btn bg-green" data-a="sg" style="font-size:18px">🎲 INICIAR JOGO</button><button class="btn bg-ghost mt3" data-st="board">← VOLTAR</button></div>`}
+return `<div class="scr bg">
+<div style="display:flex;align-items:center;margin-bottom:24px"><button class="bb" data-a="home">←</button><span class="txl fb" style="margin-left:8px">${{expansion:'Escolher Expansão',order:'Ordenar Jogadores',board:'Tabuleiro',ready:'Pronto!'}[ss]}</span></div>
+<div class="sb">${st.map((s,i)=>`<div class="${s===ss?'cr':i<si?'dn2':''}"></div>`).join('')}</div>
+${c}
+${ih?'<div class="td tx tc mt4">🔑 És o anfitrião</div>':''}
+</div>`}
+
+let gv='dice',bd=0,rd=0,rl=false,tg={},tr={},tt='',tm='bank',bg='wood',br='brick';
+function rG(){
+const ap=S.players[S.ci];
+const im=CI===ap?.id;
+const lr=S.dh[S.dh.length-1];
+const hk=ap?.devCards.some(c=>c.t==='knight'&&!c.p);
+const w=S.players.find(p=>p.vp>=10);
+if(!im&&gv!=='narrator')gv='narrator';
+let c='';
+if(gv==='dice'){c=`<div class="tc mb6"><div class="td ts">Jogada ${S.tn}</div><div class="tl">É a vez de <span class="tg fb">${ap?.name}</span> lançar os dados</div></div>
+<div style="display:flex;gap:24px;justify-content:center;margin-bottom:32px">
+<div class="tc"><div class="${bd?'dice dice-b':'dice'}" style="${!bd?'background:rgba(30,58,95,.3);border:2px dashed rgba(59,130,246,.3)':''}">${bd?dd(bd):'<span style="color:rgba(59,130,246,.5);font-size:20px">?</span>'}</div><div class="tx mt2" style="color:#93c5fd">Azul</div></div>
+<div class="tc"><div class="${rd?'dice dice-r':'dice'}" style="${!rd?'background:rgba(139,26,26,.3);border:2px dashed rgba(239,68,68,.3)':''}">${rd?dd(rd):'<span style="color:rgba(239,68,68,.5);font-size:20px">?</span>'}</div><div class="tx mt2" style="color:#fca5a5">Vermelho</div></div>
+</div>
+${rl?`<div class="tc mb6"><div class="t4 fk">${bd+rd}</div><div class="td ts">${bd} + ${rd}</div></div>`:''}
+${!rl&&im?`<div style="margin-bottom:24px"><div class="ls" style="color:#93c5fd">Dado Azul</div><div style="display:flex;gap:8px;margin-bottom:16px">${[1,2,3,4,5,6].map(n=>`<button class="dn${bd===n?' dn-ab':''}" data-di="b:${n}">${n}</button>`).join('')}</div><div class="ls" style="color:#fca5a5">Dado Vermelho</div><div style="display:flex;gap:8px;margin-bottom:16px">${[1,2,3,4,5,6].map(n=>`<button class="dn${rd===n?' dn-ar':''}" data-di="r:${n}">${n}</button>`).join('')}</div></div><button class="btn bg-gold" data-a="ar">🎲 LANÇAR DADOS</button>`:''}
+${rl&&im?(lr?.total===7?`<div class="cd mt3" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);text-align:center"><div style="color:#fca5a5;font-weight:500">🦹 Saiu 7! Move o ladrão!</div><div class="tx mt2" style="color:rgba(252,165,165,.6)">Jogadores com +7 cartas descartaram metade</div></div><button class="btn bg-red mt3" data-a="vr">⚔️ MOVER LADRÃO</button>`:`<button class="btn bg-green" data-a="va">✓ Confirmar</button>`):''}
+${!im?`<div class="tc td ts">A aguardar ${ap?.name}...</div>`:''}`}
+else if(gv==='actions'&&im){c=`<div class="tc tl fb mb4">O que queres fazer?</div>
+<div class="cd mb4"><div class="ls">Teus recursos</div><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">${Object.entries(R).map(([r,i])=>`<div style="display:flex;align-items:center;gap:4px"><span style="font-size:18px">${i}</span><span class="fb">${ap.resources[r]}</span></div>`).join('')}</div></div>
+<div class="g2 mb4">
+<button class="cd" data-a="vb" style="cursor:pointer;border:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px"><span style="font-size:24px">🏗️</span><span class="ts fb">Construir</span></button>
+<button class="cd" data-a="vt" style="cursor:pointer;border:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px"><span style="font-size:24px">🔄</span><span class="ts fb">Trocar</span></button>
+<button class="cd" data-a="vd" style="cursor:pointer;border:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative"><span style="font-size:24px">🃏</span><span class="ts fb">Dev. Cartas</span>${ap.devCards.filter(c=>!c.p).length?`<span style="position:absolute;top:8px;right:8px;width:20px;height:20px;background:#f59e0b;border-radius:50%;font-size:11px;color:#1a1a2e;font-weight:700;display:flex;align-items:center;justify-content:center">${ap.devCards.filter(c=>!c.p).length}</span>`:''}</button>
+${hk?`<button class="cd" data-a="pk" style="cursor:pointer;border:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(139,26,26,.15);border-color:rgba(239,68,68,.3)"><span style="font-size:24px">⚔️</span><span class="ts fb">Cavaleiro</span></button>`:''}
+</div>
+<button class="btn bg-ghost" data-a="et">PASSAR VEZ →</button>`}
+else if(gv==='build'&&im){const os=[{i:'🏘️',n:'Aldeia',c:{wood:1,brick:1,sheep:1,wheat:1},a:'bs'},{i:'🏰',n:'Cidade',c:{wheat:2,ore:3},a:'bc'},{i:'🛤️',n:'Estrada',c:{wood:1,brick:1},a:'brd'},{i:'🃏',n:'Carta Desenvolvimento',c:{wheat:1,sheep:1,ore:1},a:'bd'}];c=`<div class="tc tl fb mb4">Construir</div><div style="display:flex;flex-direction:column;gap:12px">${os.map(o=>{const cn=Object.entries(o.c).every(([r,a])=>ap.resources[r]>=a);return `<button class="cd" data-a="${o.a}" ${cn?'':'disabled style="opacity:.4;cursor:not-allowed"'} style="cursor:${cn?'pointer':'not-allowed'};border:none;color:#fff;display:flex;align-items:center;gap:16px;text-align:left;width:100%"><span style="font-size:24px">${o.i}</span><div style="flex:1"><div class="fb ts">${o.n}</div><div style="display:flex;gap:8px;margin-top:4px">${Object.entries(o.c).map(([r,a])=>`<span class="tx tm">${R[r]}${a}</span>`).join('')}</div></div>${cn?'<span style="color:#4ade80">✓</span>':''}</button>`}).join('')}</div><button class="btn bg-ghost mt4" data-a="va">← VOLTAR</button>`}
+else if(gv==='trade'&&im){if(tm==='bank'){c=`<div class="tc tl fb mb4">Trocar</div><div style="display:flex;gap:12px;margin-bottom:16px"><button class="btn bg-sm ${tm==='bank'?'bg-gold':'bg-ghost'}" data-a="tmb">🏦 Banca</button><button class="btn bg-sm ${tm==='player'?'bg-gold':'bg-ghost'}" data-a="tmp">👥 Jogador</button></div><div class="ls">Dar (4:1)</div><div class="g5 mb3">${Object.entries(R).map(([r,i])=>`<button class="rb${bg===r?' rb-s':''}" data-bg="${r}"><div style="font-size:18px">${i}</div><div class="tx tm">${ap.resources[r]}</div></button>`).join('')}</div><div class="tc t2" style="margin:12px 0">→</div><div class="ls">Receber</div><div class="g5 mb4">${Object.entries(R).map(([r,i])=>`<button class="rb${br===r?' rb-s':''}" data-br="${r}"><div style="font-size:18px">${i}</div></button>`).join('')}</div><button class="btn bg-gold" data-a="tbnk" ${ap.resources[bg]<4?'disabled style="opacity:.4"':''}>CONFIRMAR</button><button class="btn bg-ghost mt3" data-a="va">← VOLTAR</button>`}else{if(!tt)tt=S.players.find(p=>p.id!==ap.id)?.id||'';c=`<div class="tc tl fb mb4">Trocar</div><div style="display:flex;gap:12px;margin-bottom:16px"><button class="btn bg-sm ${tm==='bank'?'bg-gold':'bg-ghost'}" data-a="tmb">🏦 Banca</button><button class="btn bg-sm ${tm==='player'?'bg-gold':'bg-ghost'}" data-a="tmp">👥 Jogador</button></div><div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:16px">${S.players.filter(p=>p.id!==ap.id).map(p=>`<button class="tab${tt===p.id?' ac':''}" data-tt="${p.id}">${p.name}</button>`).join('')}</div><div class="ls">Tu dás (clica p/ adicionar, duplo p/ remover)</div><div class="g5 mb3">${Object.entries(R).map(([r,i])=>`<button class="rb${(tg[r]||0)>0?' rb-g':''}" data-tg="${r}"><div style="font-size:18px">${i}</div><div class="tx">${tg[r]||0}</div></button>`).join('')}</div><div class="tc t2" style="margin:12px 0">⇄</div><div class="ls">Recebes</div><div class="g5 mb4">${Object.entries(R).map(([r,i])=>`<button class="rb${(tr[r]||0)>0?' rb-r':''}" data-tr="${r}"><div style="font-size:18px">${i}</div><div class="tx">${tr[r]||0}</div></button>`).join('')}</div><button class="btn bg-gold" data-a="tpl">CONFIRMAR</button><button class="btn bg-ghost mt3" data-a="va">← VOLTAR</button>`}}
+else if(gv==='dev'&&im){const cs=ap.devCards.filter(c=>!c.p);c=`<div class="tc tl fb mb4">Cartas de Desenvolvimento</div><div style="display:flex;flex-direction:column;gap:8px">${cs.length?cs.map(c=>`<div class="cd" style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:24px">${{knight:'⚔️',vp:'⭐',road:'🛤️',plenty:'🎁',mono:'💰'}[c.t]}</span><span class="ts">{{knight:'Cavaleiro',vp:'Ponto de Vitória',road:'Construção Estradas',plenty:'Ano Abundância',mono:'Monopólio'}[c.t]}</span></div>${['road','plenty','mono'].includes(c.t)?`<button class="btn bg-gold bg-sm" data-pd="${c.id}" style="width:auto">JOGAR</button>`:''}</div>`).join(''):'<div class="tc td ts" style="padding:32px">Sem cartas por jogar</div>'}</div><button class="btn bg-ghost mt4" data-a="va">← VOLTAR</button>`}
+else if(gv==='robber'&&im){c=`<div class="tc tl fb mb4">⚔️ Mover o Ladrão</div><div class="td ts tc mb4">Escolhe quem roubar</div><div style="display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto">${S.players.filter(p=>p.id!==ap.id).map(p=>`<button class="cd" data-rb="${p.id}" style="cursor:pointer;border:none;color:#fff;text-align:left;width:100%"><span>🎯 ${p.name}</span></button>`).join('')}</div><button class="btn bg-ghost mt4" data-a="va">← VOLTAR</button>`}
+else{c=`<div class="tc mb6"><div class="td ts">Jogada ${S.tn}</div><div class="tl">Vez de <span class="tg fb">${ap?.name}</span></div></div>${S.ev.length?`<div class="cd mb4"><div class="ts">${S.ev[S.ev.length-1].d}</div></div>`:''}<div class="ls">Jogadores</div><div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">${S.players.map((p,i)=>`<div class="pr${i===S.ci?' a':''}"><div class="av" style="background:${CM[p.color]}">${p.photo?`<img src="${p.photo}">`:'👤'}</div><div style="flex:1"><div class="ts fb">${p.name}</div><div style="display:flex;gap:4px;margin-top:4px">${Object.entries(R).map(([r,ic])=>`<span class="tx tm">${ic}${p.resources[r]}</span>`).join('')}</div></div><div class="tg fb">${p.vp} VP</div></div>`).join('')}</div><div class="ls">Últimos eventos</div><div class="el">${S.ev.slice(-5).reverse().map(e=>`<div class="ei">${e.d}</div>`).join('')}</div>`}
+return `<div class="scr bg" style="padding:0">
+<div class="tb"><button class="bb" data-a="home">←</button><div class="tc"><div class="tg tx fb">Turno ${S.tn}</div><div class="ts fb">${ap?.name}</div></div><button class="btn bg-sm" data-a="eg" style="width:auto;padding:4px 8px;font-size:11px;color:rgba(239,68,68,.6);border:1px solid rgba(239,68,68,.2);background:none">FIM</button></div>
+${w?`<div class="cd mt3" style="margin:12px 16px 0;background:linear-gradient(90deg,rgba(245,158,11,.15),rgba(234,179,8,.15));border-color:rgba(245,158,11,.3);text-align:center"><div class="t3 mb2">🏆</div><div class="tg fb">${w.name} atingiu ${w.vp} pontos!</div><button class="btn bg-gold bg-sm mt2" data-a="eg" style="width:auto;margin:8px auto">TERMINAR</button></div>`:''}
+<div style="flex:1;overflow-y:auto;padding:16px">${c}</div>
+</div>`}
+
+function dd(v){const p={1:['50%,50%'],2:['25%,25%','75%,75%'],3:['25%,25%','50%,50%','75%,75%'],4:['25%,25%','75%,25%','25%,75%','75%,75%'],5:['25%,25%','75%,25%','50%,50%','25%,75%','75%,75%'],6:['25%,25%','75%,25%','25%,50%','75%,50%','25%,75%','75%,75%']};return (p[v]||[]).map(d=>{const[x,y]=d.split(',');return `<div class="dot" style="left:${x};top:${y}"></div>`}).join('')}
+
+function rE(){const so=[...S.players].sort((a,b)=>b.vp-a.vp);const w=so[0];const nc={};S.dh.forEach(d=>nc[d.total]=(nc[d.total]||0)+1);const mr=Object.entries(nc).sort((a,b)=>b[1]-a[1])[0];return `<div class="scr bg" style="align-items:center;padding-top:32px">
+<div class="tc mb8"><div class="t5 mb4">🏆</div><div class="t3 fk tg mb2">${w.name} Venceu!</div><div class="tl">${w.vp} pontos de vitória</div></div>
+<div style="width:100%;max-width:380px;margin-bottom:32px;display:flex;flex-direction:column;gap:8px">${so.map((p,i)=>`<div class="pd ${i===0?'p1':i===1?'p2':i===2?'p3':'po'}"><span style="font-size:20px;width:32px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><span style="flex:1;font-weight:500">${p.name}</span><span class="tg fb">${p.vp} VP</span></div>`).join('')}</div>
+<div style="width:100%;max-width:380px;margin-bottom:32px"><div class="ls mb3">Resumo</div>${mr?`<div class="cd mb2"><span class="tm ts">Número mais sorteado: </span><span class="tg fb">${mr[0]}</span><span class="tm ts"> (${mr[1]}x)</span></div>`:''}<div class="cd mb2"><span class="tm ts">Recurso abundante: </span><span class="tg fb">${R[ST.mar]} ${RN[ST.mar]}</span></div><div class="cd mb2"><span class="tm ts">Recurso escasso: </span><span class="tg fb">${R[ST.msr]} ${RN[ST.msr]}</span></div><div class="cd"><span class="tm ts">Jogadas: </span><span class="tg fb">${S.dh.length}</span></div></div>
+<button class="btn bg-green" data-a="ng" style="max-width:380px">🎮 NOVO JOGO</button>
+<button class="btn bg-ghost mt3" data-a="home" style="max-width:380px">← INÍCIO</button>
+</div>`}
+
+let stb='ranking';
+function rT(){const ts=[{id:'ranking',l:'Ranking',i:'🏆'},{id:'numbers',l:'Dados',i:'🎲'},{id:'enemies',l:'Inimigos',i:'⚔️'},{id:'builder',l:'Construtor',i:'🛤️'},{id:'defense',l:'Defesa',i:'🛡️'},{id:'faves',l:'Queridinhos',i:'⭐'}];let c='';
+if(stb==='ranking'){c=ST.rankings.length?`<div class="ls mb4">🏆 Ranking de Vitórias</div>${ST.rankings.map((p,i)=>`<div class="pd ${i===0?'p1':i===1?'p2':i===2?'p3':'po'} mb2"><span style="font-size:20px;width:32px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</span><div style="flex:1"><div class="fb">${p.playerName}</div><div class="td tx">${p.wins} vitórias • ${p.gp} jogos • Média ${p.avg.toFixed(1)} pts</div></div><div class="tc"><div class="tg fb txl">${p.wins}</div><div class="td tx">vitórias</div></div></div>`).join('')}`:'<div class="empty"><div class="icon">📊</div><div class="td ts">Sem dados ainda</div></div>'}
+else if(stb==='numbers'){const mx=Math.max(...Object.values(ST.nf),1);c=`<div class="ls mb4">🎲 Frequência dos Números</div>${Object.entries(ST.nf).sort(([a],[b])=>+a-+b).map(([n,f])=>`<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><span class="fb ts">${n}</span></div><div class="bbg"><div class="bf" style="width:${(f/mx)*100}%;background:${n==6||n==8?'rgba(239,68,68,.5)':n==5||n==9?'rgba(245,158,11,.5)':'rgba(59,130,246,.3)'}"></div></div><span class="tm ts" style="width:32px;text-align:right">${f}</span></div>`).join('')}<div class="cd mt4"><div class="fb ts mb2">📊 Recursos</div><div class="g5">${Object.entries(ST.rd).map(([r,c])=>`<div class="tc"><div style="font-size:24px">${R[r]}</div><div class="fb tx">${c}</div><div class="td" style="font-size:10px">${RN[r]}</div></div>`).join('')}</div><div class="td tx mt3">Abundante: ${R[ST.mar]} ${RN[ST.mar]} • Escasso: ${R[ST.msr]} ${RN[ST.msr]}</div></div>`}
+else if(stb==='enemies'){c=ST.rankings.length?`<div class="ls mb4">⚔️ Inimigos de Estimação</div>${ST.rankings.map(p=>`<div class="cd mb2"><div class="fb mb2">${p.playerName}</div>${p.fv?`<div style="display:flex;align-items:center;gap:12px"><span style="font-size:24px">🎯</span><div><div class="tg ts fb">${p.fv.name}</div><div class="td tx">${p.fv.cards} cartas</div></div></div>`:'<div class="td ts">Sem dados</div>'}</div>`).join('')}`:'<div class="empty"><div class="icon">📊</div><div class="td ts">Sem dados</div></div>'}
+else if(stb==='builder'){const s=[...ST.rankings].sort((a,b)=>b.lr-a.lr);c=`<div class="ls mb4">🛤️ Bob, o Construtor</div>${s.map((p,i)=>`<div class="pd ${i===0?'p1':i===1?'p2':i===2?'p3':'po'} mb2"><span style="font-size:20px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><div style="flex:1"><div class="fb">${p.playerName}</div><div class="td tx">${p.lr}x Maior Estrada</div></div><div class="tg fb">${p.lr}</div></div>`).join('')}`}
+else if(stb==='defense'){const s=[...ST.rankings].sort((a,b)=>b.la-a.la);c=`<div class="ls mb4">🛡️ Ministro da Defesa</div>${s.map((p,i)=>`<div class="pd ${i===0?'p1':i===1?'p2':i===2?'p3':'po'} mb2"><span style="font-size:20px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><div style="flex:1"><div class="fb">${p.playerName}</div><div class="td tx">${p.la}x Maior Exército</div></div><div class="tg fb">${p.la}</div></div>`).join('')}`}
+else{const s=[...ST.rankings].sort((a,b)=>b.dv-a.dv);c=`<div class="ls mb4">⭐ Queridinhos</div>${s.map((p,i)=>`<div class="pd ${i===0?'p1':i===1?'p2':i===2?'p3':'po'} mb2"><span style="font-size:20px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><div style="flex:1"><div class="fb">${p.playerName}</div><div class="td tx">${p.dv} PVs de cartas</div></div><div class="tg fb">${p.dv}</div></div>`).join('')}`}
+return `<div class="scr bg" style="padding:0">
+<div class="tb"><button class="bb" data-a="home">←</button><span class="txl fb" style="margin-left:8px">📊 Estatísticas</span><span class="td ts" style="margin-left:auto">${ST.tg} jogos</span></div>
+<div class="tabs">${ts.map(t=>`<button class="tab${stb===t.id?' ac':''}" data-stb="${t.id}">${t.i} ${t.l}</button>`).join('')}</div>
+<div style="flex:1;overflow-y:auto;padding:16px">${c}</div>
+</div>`}
+
+function ae(){
+document.querySelectorAll('[data-a]').forEach(el=>{
+el.addEventListener('click',()=>{
+const a=el.dataset.a;
+if(a==='home'){sc='home';rn()}
+else if(a==='np'){sc='player';rn()}
+else if(a==='npl'){if(S.phase==='playing'){sc='play';gv='dice';bd=0;rd=0;rl=false}else if(S.phase==='finished'){sc='end'}else if(S.phase==='setup'){sc='setup'}else{up({phase:'setup',hostId:CI,gameId:uid()});ss='expansion';sc='setup'}rn()}
+else if(a==='nst'){sc='stats';rn()}
+else if(a==='sg'){dk=mkD();up({phase:'playing',ci:0,tn:1,players:S.players.map(p=>({...p,resources:{wood:0,brick:0,sheep:0,wheat:0,ore:0},devCards:[],vp:0,hasLR:false,hasLA:false,kp:0,rl:0,lrl:0,sett:0,cities:0})),dh:[],tr:[],ev:[],rob:null,lrh:null,lah:null});sc='play';gv='dice';bd=0;rd=0;rl=false;rn()}
+else if(a==='ar'){const b=Math.floor(Math.random()*6)+1,r=Math.floor(Math.random()*6)+1;bd=b;rd=r;rl=true;doR(b,r)}
+else if(a==='va'){gv='actions';rn()}
+else if(a==='vb'){gv='build';rn()}
+else if(a==='vt'){gv='trade';rn()}
+else if(a==='vd'){gv='dev';rn()}
+else if(a==='vr'){gv='robber';rn()}
+else if(a==='et'){bd=0;rd=0;rl=false;gv='dice';const ni=(S.ci+1)%S.players.length;const nt=ni===0?S.tn+1:S.tn;up({ci:ni,tn:nt,ev:[...S.ev,{id:uid(),t:'turn',pid:S.players[S.ci].id,d:`Fim do turno de ${S.players[S.ci].name}`,tn:S.tn,ts:Date.now()}]})}
+else if(a==='eg'){doEG();sc='end';rn()}
+else if(a==='ng'){dk=mkD();up({phase:'lobby',hostId:null,gameId:'',players:S.players.map(p=>({...p,resources:{wood:0,brick:0,sheep:0,wheat:0,ore:0},devCards:[],vp:0,hasLR:false,hasLA:false,kp:0,rl:0,lrl:0,sett:0,cities:0})),ci:0,tn:1,dh:[],tr:[],ev:[],rob:null,lrh:null,lah:null});sc='home';rn()}
+else if(a==='bs'){const ap=S.players[S.ci];up({players:S.players.map(p=>p.id===ap.id?{...p,sett:p.sett+1,vp:p.vp+1}:p),ev:[...S.ev,{id:uid(),t:'build',pid:ap.id,d:`${ap.name} construiu uma aldeia`,tn:S.tn,ts:Date.now()}]});gv='actions';rn()}
+else if(a==='bc'){const ap=S.players[S.ci];up({players:S.players.map(p=>p.id===ap.id?{...p,sett:Math.max(0,p.sett-1),cities:p.cities+1,vp:p.vp+2}:p),ev:[...S.ev,{id:uid(),t:'build',pid:ap.id,d:`${ap.name} construiu uma cidade`,tn:S.tn,ts:Date.now()}]});gv='actions';rn()}
+else if(a==='brd'){const ap=S.players[S.ci];let ps=S.players.map(p=>p.id===ap.id?{...p,rl:p.rl+1,lrl:Math.max(p.lrl,p.rl+1)}:p);const mx=Math.max(...ps.map(p=>p.lrl));if(mx>=5){const h=ps.find(p=>p.lrl===mx);if(h&&h.id!==S.lrh){ps=ps.map(p=>({...p,hasLR:p.id===h.id,vp:p.id===h.id?p.vp+2:(p.hasLR?p.vp-2:p.vp)}));up({players:ps,lrh:h.id});gv='actions';rn();return}}up({players:ps});gv='actions';rn()}
+else if(a==='bd'){if(!dk.length)return;const card=dk.pop();const ap=S.players[S.ci];up({players:S.players.map(p=>p.id===ap.id?{...p,devCards:[...p.devCards,{...card,p:false}],vp:p.vp+(card.t==='vp'?1:0)}:p),ev:[...S.ev,{id:uid(),t:'dev',pid:ap.id,d:`${ap.name} comprou carta de desenvolvimento`,tn:S.tn,ts:Date.now()}]});gv='actions';rn()}
+else if(a==='pk'){const ap=S.players[S.ci];const kc=ap.devCards.find(c=>c.t==='knight'&&!c.p);if(kc){doPD(ap.id,kc.id);gv='robber';rn()}}
+else if(a==='tbnk'){const ap=S.players[S.ci];if(ap.resources[bg]<4)return;up({players:S.players.map(p=>p.id===ap.id?{...p,resources:{...p.resources,[bg]:p.resources[bg]-4,[br]:p.resources[br]+1}}:p),ev:[...S.ev,{id:uid(),t:'trade',pid:ap.id,d:`${ap.name} trocou 4 ${RN[bg]} por 1 ${RN[br]}`,tn:S.tn,ts:Date.now()}]});gv='actions';rn()}
+else if(a==='tpl'){const ap=S.players[S.ci];const hg=Object.values(tg).some(v=>v>0);const hr=Object.values(tr).some(v=>v>0);if(!hg||!hr)return;const tp=S.players.find(p=>p.id===tt);const gd=Object.entries(tg).filter(([,v])=>v>0).map(([r,a])=>`${a} ${RN[r]}`).join(', ');const rdd=Object.entries(tr).filter(([,v])=>v>0).map(([r,a])=>`${a} ${RN[r]}`).join(', ');let ps=S.players.map(p=>{if(p.id===ap.id){const r={...p.resources};Object.entries(tg).forEach(([k,v])=>r[k]-=v||0);Object.entries(tr).forEach(([k,v])=>r[k]+=v||0);return{...p,resources:r}}if(p.id===tt){const r={...p.resources};Object.entries(tr).forEach(([k,v])=>r[k]-=v||0);Object.entries(tg).forEach(([k,v])=>r[k]+=v||0);return{...p,resources:r}}return p});up({players:ps,ev:[...S.ev,{id:uid(),t:'trade',pid:ap.id,d:`${ap.name} deu ${gd} a ${tp.name} e recebeu ${rdd}`,tn:S.tn,ts:Date.now()}]});tg={};tr={};gv='actions';rn()}
+else if(a==='tmb'){tm='bank';rn()}
+else if(a==='tmp'){tm='player';tt=S.players.find(p=>p.id!==S.players[S.ci].id)?.id||'';rn()}
+});
+});
+document.querySelectorAll('[data-di]').forEach(el=>{el.addEventListener('click',()=>{const[d,v]=el.dataset.di.split(':');const val=+v;if(d==='b')bd=val;else rd=val;const b2=d==='b'?val:bd;const r2=d==='r'?val:rd;if(b2>0&&r2>0){rl=true;doR(b2,r2)}})});
+document.querySelectorAll('[data-st]').forEach(el=>{el.addEventListener('click',()=>{ss=el.dataset.st;rn()})});
+document.querySelectorAll('[data-ex]').forEach(el=>{el.addEventListener('click',()=>{up({board:{hexes:mkB(),expansion:el.dataset.ex}});ss='order';rn()})});
+document.querySelectorAll('[data-ro]').forEach(el=>{el.addEventListener('click',()=>{const[i,dir]=el.dataset.ro.split(':');const idx=+i;if(dir==='u'&&idx>0){const ps=[...S.players];[ps[idx-1],ps[idx]]=[ps[idx],ps[idx-1]];up({players:ps})}else if(dir==='d'&&idx<S.players.length-1){const ps=[...S.players];[ps[idx],ps[idx+1]]=[ps[idx+1],ps[idx]];up({players:ps})}rn()})});
+document.querySelectorAll('[data-cl]').forEach(el=>{el.addEventListener('click',()=>{selC=el.dataset.cl;rn()})});
+document.querySelectorAll('[data-bg]').forEach(el=>{el.addEventListener('click',()=>{bg=el.dataset.bg;rn()})});
+document.querySelectorAll('[data-br]').forEach(el=>{el.addEventListener('click',()=>{br=el.dataset.br;rn()})});
+document.querySelectorAll('[data-tg]').forEach(el=>{el.addEventListener('click',()=>{const r=el.dataset.tg;tg[r]=(tg[r]||0)+1;rn()});el.addEventListener('dblclick',()=>{delete tg[el.dataset.tg];rn()})});
+document.querySelectorAll('[data-tr]').forEach(el=>{el.addEventListener('click',()=>{const r=el.dataset.tr;tr[r]=(tr[r]||0)+1;rn()});el.addEventListener('dblclick',()=>{delete tr[el.dataset.tr];rn()})});
+document.querySelectorAll('[data-tt]').forEach(el=>{el.addEventListener('click',()=>{tt=el.dataset.tt;rn()})});
+document.querySelectorAll('[data-rb]').forEach(el=>{el.addEventListener('click',()=>{const ap=S.players[S.ci];const hex=S.board.hexes.find(h=>h.type!=='desert');doRob(hex.id,el.dataset.rb);gv='actions';rn()})});
+document.querySelectorAll('[data-pd]').forEach(el=>{el.addEventListener('click',()=>{const ap=S.players[S.ci];doPD(ap.id,el.dataset.pd);gv='actions';rn()})});
+document.querySelectorAll('[data-stb]').forEach(el=>{el.addEventListener('click',()=>{stb=el.dataset.stb;rn()})});
+
+const sb=document.getElementById('sb');
+if(sb)sb.addEventListener('click',()=>{
+const name=document.getElementById('ni').value.trim();
+if(!name)return;
+const cp=S.players.find(p=>p.id===CI);
+if(cp){up({players:S.players.map(p=>p.id===cp.id?{...p,name,color:selC||cp.color,photo:cp.photo}:p)})}
+else{const p={id:uid(),name,color:selC||'blue',photo:null,resources:{wood:0,brick:0,sheep:0,wheat:0,ore:0},devCards:[],vp:0,hasLR:false,hasLA:false,kp:0,rl:0,lrl:0,sett:0,cities:0};up({players:[...S.players,p]});CI=p.id;localStorage.setItem(CK,p.id)}
+sc='home';rn()});
+
+const fi=document.getElementById('fi');
+const ci2=document.getElementById('ci');
+if(fi)fi.addEventListener('change',hp);
+if(ci2)ci2.addEventListener('change',hp);
+document.querySelectorAll('[data-a="pg"]').forEach(el=>el.addEventListener('click',()=>fi?.click()));
+document.querySelectorAll('[data-a="pc"]').forEach(el=>el.addEventListener('click',()=>ci2?.click()));
+}
+
+let selC=null;
+function hp(e){const f=e.target.files?.[0];if(f){const r=new FileReader();r.onload=ev=>{const cp=S.players.find(p=>p.id===CI);if(cp){up({players:S.players.map(p=>p.id===cp.id?{...p,photo:ev.target.result}:p)})}rn()};r.readAsDataURL(f)}}
+
+function doR(b,r){const total=b+r;const ap=S.players[S.ci];const roll={blue:b,red:r,total,pid:ap.id,tn:S.tn};const ev={id:uid(),t:'dice',pid:ap.id,d:`${ap.name} lançou ${b} + ${r} = ${total}`,tn:S.tn,ts:Date.now()};let ns={dh:[...S.dh,roll],ev:[...S.ev,ev]};
+if(total===7){const ps=S.players.map(p=>{const tc=Object.values(p.resources).reduce((a,b)=>a+b,0);if(tc>7){const res={...p.resources};let disc=Math.floor(tc/2);const keys=['wood','brick','sheep','wheat','ore'];while(disc>0){const av=keys.filter(r=>res[r]>0);if(!av.length)break;res[av[Math.floor(Math.random()*av.length)]]--;disc--}return{...p,resources:res}}return p});ns.players=ps;ns.ev=[...ns.ev,{id:uid(),t:'robber',pid:ap.id,d:`Saiu 7! ${ap.name} deve mover o ladrão.`,tn:S.tn,ts:Date.now()}]}
+else{const ps=S.players.map(p=>({...p,resources:{...p.resources}}));const match=S.board.hexes.filter(h=>h.num===total&&h.type!=='desert'&&h.id!==S.rob);match.forEach(h=>{const res=h.type;ps.forEach(p=>{const g=p.sett+(p.cities*2);if(g>0){p.resources[res]+=g}})});ns.players=ps;const nst={...ST};nst.nf[total]=(nst.nf[total]||0)+1;match.forEach(h=>{nst.rd[h.type]=(nst.rd[h.type]||0)+1});svs(nst);ST=nst}
+up(ns);rn()}
+
+function doPD(pid,cid){let ps=S.players.map(p=>{if(p.id===pid){const c=p.devCards.find(x=>x.id===cid);return{...p,devCards:p.devCards.map(x=>x.id===cid?{...x,p:true}:x),kp:c?.t==='knight'?p.kp+1:p.kp}}return p});const mk=Math.max(...ps.map(p=>p.kp));if(mk>=3){const h=ps.find(p=>p.kp===mk);if(h&&h.id!==S.lah){ps=ps.map(p=>({...p,hasLA:p.id===h.id,vp:p.id===h.id?p.vp+2:(p.hasLA?p.vp-2:p.vp)}));up({players:ps,lah:h.id});return}up({players:ps})}
+
+function doRob(hexId,stolenFrom){let ps=[...S.players];const ap=ps[S.ci];if(stolenFrom){ps=ps.map(p=>{if(p.id===stolenFrom){const r={...p.resources};const av=Object.entries(r).filter(([,v])=>v>0);if(av.length){const[res]=av[Math.floor(Math.random()*av.length)];r[res]--;return{...p,resources:r}}return p}if(p.id===ap.id){const victim=S.players.find(pl=>pl.id===stolenFrom);const av=Object.entries(victim.resources).filter(([,v])=>v>0);if(av.length){const r={...p.resources};const[res]=av[Math.floor(Math.random()*av.length)];r[res]++;return{...p,resources:r}}return p}return p})}up({players:ps,rob:hexId,ev:[...S.ev,{id:uid(),t:'robber',pid:ap.id,d:`${ap.name} moveu o ladrão${stolenFrom?` e roubou a ${S.players.find(p=>p.id===stolenFrom)?.name}`:''}`,tn:S.tn,ts:Date.now()}]})}
+
+function doEG(){const sorted=[...S.players].sort((a,b)=>b.vp-a.vp);const ns={...ST};ns.tg++;const re=Object.entries(ns.rd);re.sort((a,b)=>a[1]-b[1]);ns.msr=re[0][0];ns.mar=re[re.length-1][0];sorted.forEach((p,i)=>{let ex=ns.rankings.find(r=>r.playerId===p.id);if(!ex){ex={playerId:p.id,playerName:p.name,wins:0,gp:0,tp:0,avg:0,lr:0,la:0,dv:0,fv:null};ns.rankings.push(ex)}ex.gp++;ex.tp+=p.vp;ex.avg=ex.tp/ex.gp;if(i===0)ex.wins++;if(p.hasLR)ex.lr++;if(p.hasLA)ex.la++;ex.dv+=p.devCards.filter(c=>c.t==='vp'&&c.p).length});ns.rankings.sort((a,b)=>b.wins-a.wins||b.avg-a.avg);svs(ns);ST=ns;up({phase:'finished'})}
+
+rn();
+</script>
+</body>
+</html>
